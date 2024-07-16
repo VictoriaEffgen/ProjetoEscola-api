@@ -14,6 +14,7 @@ class Log extends Model
     protected $fillable = [
         'event',
         'duration',
+        'date_initial',
         'issuer_id',
         'referent_id',
     ];

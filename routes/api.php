@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\GradesController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
@@ -55,6 +56,14 @@ Route::middleware('authJWT')->group(function (){
         Route::get('/teacher/{teacher_id}/serie/{serie}', [GradesController::class, 'myClassAgenda'])
             ->where('serie', '[0-9]')->middleware('isSelf');
         Route::get('/serie/{serie}', [GradesController::class, 'classAgenda'])->middleware('isCoordinator');
+    });
+
+    Route::prefix('log')->group(function(){
+        Route::post('/', [LogController::class, 'create'])->middleware('isCoordinator');
+        Route::put('/{id}', [LogController::class, 'update'])->middleware('isCoordinator');
+        Route::delete('/{id}', [LogController::class, 'delete'])->middleware('isCoordinator');
+        Route::get('/', [LogController::class, 'all'])->middleware('notStudent');
+        Route::get('/{id}', [LogController::class, 'single'])->middleware('isSelf');
     });
 });
 
